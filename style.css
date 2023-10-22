@@ -1,0 +1,87 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+#search-todos {
+  width: 40%;
+  margin: 0 auto; /* Center the search bar */
+  padding: 5px;
+  display: block; /* Ensure it takes the full width available */
+  margin-bottom: 20px;
+}
+
+#new-todo-container {
+  margin: 0 auto; /* Center the container */
+  width: 40%;
+  display: flex;
+  margin-top: 20px;
+}
+
+#new-todo-title,
+#new-todo-date,
+#add-todo {
+  margin: 10px auto; /* Center the input fields and button */
+  padding: 5px;
+  display: block; /* Ensure they take the full width available */
+  width: 80%;
+}
+
+#todo-list {
+  list-style-type: none;
+  padding: 0;
+  width: 40%;
+  margin: 0 auto; /* Center the todo list */
+}
+
+li {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+mark {
+  background-color: yellow;
+}
+
+button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* Optional: Style for checked checkbox */
+input[type="checkbox"]:checked + span {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.todo {
+  display: flex;
+  gap: 6.25rem;
+  align-items: center;
+}
+
+.todo-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.todo-status {
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+}
+
+.todo-title {
+  display: block;
+  width: 100;
+}
