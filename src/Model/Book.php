@@ -3,66 +3,66 @@ namespace App\Model;
 
 use App\Service\Config;
 
-class Post
+class Book
 {
     private ?int $id = null;
-    private ?string $subject = null;
-    private ?string $content = null;
+    private ?string $title  = null;
+    private ?string $author = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): Post
+    public function setId(?int $id): Book
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getSubject(): ?string
+    public function getTitle(): ?string
     {
-        return $this->subject;
+        return $this->title;
     }
 
-    public function setSubject(?string $subject): Post
+    public function setTitle(?string $title): Book
     {
-        $this->subject = $subject;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getAuthor(): ?string
     {
-        return $this->content;
+        return $this->author;
     }
 
-    public function setContent(?string $content): Post
+    public function setAuthor(?string $author): Book
     {
-        $this->content = $content;
+        $this->author = $author;
 
         return $this;
     }
 
-    public static function fromArray($array): Post
+    public static function fromArray($array): Book
     {
-        $post = new self();
-        $post->fill($array);
+        $book = new self();
+        $book->fill($array);
 
-        return $post;
+        return $book;
     }
 
-    public function fill($array): Post
+    public function fill($array): Book
     {
         if (isset($array['id']) && ! $this->getId()) {
             $this->setId($array['id']);
         }
-        if (isset($array['subject'])) {
-            $this->setSubject($array['subject']);
+        if (isset($array['title'])) {
+            $this->setTitle($array['title']);
         }
-        if (isset($array['content'])) {
-            $this->setContent($array['content']);
+        if (isset($array['author'])) {
+            $this->setAuthor($array['author']);
         }
 
         return $this;
@@ -71,31 +71,31 @@ class Post
     public static function findAll(): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM post';
+        $sql = 'SELECT * FROM book';
         $statement = $pdo->prepare($sql);
         $statement->execute();
 
-        $posts = [];
-        $postsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($postsArray as $postArray) {
-            $posts[] = self::fromArray($postArray);
+        $books = [];
+        $booksArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($booksArray as $bookArray) {
+            $books[] = self::fromArray($bookArray);
         }
 
-        return $posts;
+        return $books;
     }
 
-    public static function find($id): ?Post
+    public static function find($id): ?Book
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM post WHERE id = :id';
+        $sql = 'SELECT * FROM book WHERE id = :id';
         $statement = $pdo->prepare($sql);
         $statement->execute(['id' => $id]);
 
-        $postArray = $statement->fetch(\PDO::FETCH_ASSOC);
-        if (! $postArray) {
+        $bookArray = $statement->fetch(\PDO::FETCH_ASSOC);
+        if (! $bookArray) {
             return null;
         }
-        $post = Post::fromArray($postArray);
+        $post = Book::fromArray($bookArray);
 
         return $post;
     }
@@ -104,20 +104,20 @@ class Post
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getId()) {
-            $sql = "INSERT INTO post (subject, content) VALUES (:subject, :content)";
+            $sql = "INSERT INTO book (title, author) VALUES (:title, :author)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                'subject' => $this->getSubject(),
-                'content' => $this->getContent(),
+                'title' => $this->getTitle(),
+                'author' => $this->getAuthor(),
             ]);
 
             $this->setId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE post SET subject = :subject, content = :content WHERE id = :id";
+            $sql = "UPDATE book SET title = :title, author = :author WHERE id = :id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                ':subject' => $this->getSubject(),
-                ':content' => $this->getContent(),
+                ':title' => $this->getTitle(),
+                ':author' => $this->getAuthor(),
                 ':id' => $this->getId(),
             ]);
         }
@@ -126,14 +126,14 @@ class Post
     public function delete(): void
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = "DELETE FROM post WHERE id = :id";
+        $sql = "DELETE FROM book WHERE id = :id";
         $statement = $pdo->prepare($sql);
         $statement->execute([
             ':id' => $this->getId(),
         ]);
 
         $this->setId(null);
-        $this->setSubject(null);
-        $this->setContent(null);
+        $this->setAuthor(null);
+        $this->setTitle(null);
     }
 }
